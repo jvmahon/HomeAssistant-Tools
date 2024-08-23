@@ -1,0 +1,329 @@
+blueprint:
+  name: Inovelli Matter Switch Tap Sequences
+  description: "Create an automation to perform predefined actions when a button on
+    an Inovelli switch is clicked. Supported models:\n\n  - VTM31-SN\n  - VTM35-SN"
+  domain: automation
+  author: jvm33
+  homeassistant:
+    min_version: 2024.8.0
+  input:
+    entities_inputs:
+      name: Entities
+      icon: mdi:devices
+      input:
+        entity_up:
+          name: Entity Up
+          selector:
+            entity:
+              filter:
+              - domain:
+                - event
+                device_class:
+                - button
+              multiple: true
+        entity_down:
+          name: Entity Down
+          selector:
+            entity:
+              filter:
+              - domain:
+                - event
+                device_class:
+                - button
+              multiple: true
+        entity_config:
+          name: Entity Config
+          selector:
+            entity:
+              filter:
+              - domain:
+                - event
+                device_class:
+                - button
+              multiple: true
+    up_inputs:
+      name: Up Pressed
+      icon: mdi:arrow-up-bold
+      input:
+        up_pressed_once:
+          name: Up pressed once
+          description: When Up is pressed once
+          default: []
+          selector:
+            action: {}
+        up_pressed_twice:
+          name: Up pressed twice
+          description: When Up is pressed twice
+          default: []
+          selector:
+            action: {}
+        up_pressed_3_times:
+          name: Up pressed 3 times
+          description: When Up is pressed 3 times
+          default: []
+          selector:
+            action: {}
+        up_pressed_4_times:
+          name: Up pressed 4 times
+          description: When Up is pressed 4 times
+          default: []
+          selector:
+            action: {}
+        up_pressed_5_times:
+          name: Up pressed 5 times
+          description: When Up is pressed 5 times
+          default: []
+          selector:
+            action: {}
+        up_held:
+          name: Up held
+          description: When Up is held
+          default: []
+          selector:
+            action: {}
+        up_released:
+          name: Up Released
+          description: When Up is released
+          default: []
+          selector:
+            action: {}
+    down_inputs:
+      name: Down Pressed
+      icon: mdi:arrow-down-bold
+      input:
+        down_pressed_once:
+          name: Down pressed once
+          description: When Down is pressed once
+          default: []
+          selector:
+            action: {}
+        down_pressed_twice:
+          name: Down pressed twice
+          description: When Down is pressed twice
+          default: []
+          selector:
+            action: {}
+        down_pressed_3_times:
+          name: Down pressed 3 times
+          description: When Down is pressed 3 times
+          default: []
+          selector:
+            action: {}
+        down_pressed_4_times:
+          name: Down pressed 4 times
+          description: When Down is pressed 4 times
+          default: []
+          selector:
+            action: {}
+        down_pressed_5_times:
+          name: Down pressed 5 times
+          description: When Down is pressed 5 times
+          default: []
+          selector:
+            action: {}
+        down_held:
+          name: Down held
+          description: When Down is held
+          default: []
+          selector:
+            action: {}
+        down_released:
+          name: Down Released
+          description: When Down is released
+          default: []
+          selector:
+            action: {}
+    config_inputs:
+      name: Config Pressed
+      icon: mdi:cog
+      input:
+        config_pressed_once:
+          name: Config pressed once
+          description: When Config is pressed once
+          default: []
+          selector:
+            action: {}
+        config_pressed_twice:
+          name: Config pressed twice
+          description: When Config is pressed twice
+          default: []
+          selector:
+            action: {}
+        config_pressed_3_times:
+          name: Config pressed 3 times
+          description: When Config is pressed 3 times
+          default: []
+          selector:
+            action: {}
+        config_pressed_4_times:
+          name: Config pressed 4 times
+          description: When Config is pressed 4 times
+          default: []
+          selector:
+            action: {}
+        config_pressed_5_times:
+          name: Config pressed 5 times
+          description: When Config is pressed 5 times
+          default: []
+          selector:
+            action: {}
+        config_held:
+          name: Config held
+          description: When Config is held
+          default: []
+          selector:
+            action: {}
+        config_released:
+          name: Config Released
+          description: When Config is released
+          default: []
+          selector:
+            action: {}
+  source_url: https://gist.github.com/sethvargo/ed6f1cc1ce9e974f484ec34af00f6776
+mode: queued
+max_exceeded: silent
+trigger:
+- id: trigger_up_state
+  platform: state
+  entity_id: !input entity_up
+  not_from:
+  - unknown
+  - unavailable
+- id: trigger_down_state
+  platform: state
+  entity_id: !input entity_down
+  not_from:
+  - unknown
+  - unavailable
+- id: trigger_config_state
+  platform: state
+  entity_id: !input entity_config
+  not_from:
+  - unknown
+  - unavailable
+condition: []
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - trigger_up_state
+    sequence:
+    - choose:
+      - conditions:
+        - alias: Pressed 1X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_1') }}
+        sequence: !input up_pressed_once
+      - conditions:
+        - alias: Pressed 2X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_2') }}
+        sequence: !input up_pressed_twice
+      - conditions:
+        - alias: Pressed 3X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_3') }}
+        sequence: !input up_pressed_3_times
+      - conditions:
+        - alias: Pressed 4X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_4') }}
+        sequence: !input up_pressed_4_times
+      - conditions:
+        - alias: Pressed 5X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_5') }}
+        sequence: !input up_pressed_5_times
+      - conditions:
+        - alias: Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_press') }}
+        sequence: !input up_held
+      - conditions:
+        - alias: Release after Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_release') }}
+        sequence: !input up_released
+  - conditions:
+    - condition: trigger
+      id:
+      - trigger_down_state
+    sequence:
+    - choose:
+      - conditions:
+        - alias: Pressed 1X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_1') }}
+        sequence: !input down_pressed_once
+      - conditions:
+        - alias: Pressed 2X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_2') }}
+        sequence: !input down_pressed_twice
+      - conditions:
+        - alias: Pressed 3X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_3') }}
+        sequence: !input down_pressed_3_times
+      - conditions:
+        - alias: Pressed 4X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_4') }}
+        sequence: !input down_pressed_4_times
+      - conditions:
+        - alias: Pressed 5X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_5') }}
+        sequence: !input down_pressed_5_times
+      - conditions:
+        - alias: Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_press') }}
+        sequence: !input down_held
+      - conditions:
+        - alias: Release after Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_release') }}
+        sequence: !input down_released
+  - conditions:
+    - condition: trigger
+      id:
+      - trigger_config_state
+    sequence:
+    - choose:
+      - conditions:
+        - alias: Pressed 1X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_1') }}
+        sequence: !input config_pressed_once
+      - conditions:
+        - alias: Pressed 2X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_2') }}
+        sequence: !input config_pressed_twice
+      - conditions:
+        - alias: Pressed 3X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_3') }}
+        sequence: !input config_pressed_3_times
+      - conditions:
+        - alias: Pressed 4X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_4') }}
+        sequence: !input config_pressed_4_times
+      - conditions:
+        - alias: Pressed 5X
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'multi_press_5') }}
+        sequence: !input config_pressed_5_times
+      - conditions:
+        - alias: Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_press') }}
+        sequence: !input config_held
+      - conditions:
+        - alias: Release after Long Press
+          condition: template
+          value_template: {{ is_state_attr('trigger.to_state.entity_id', 'event_type', 'long_release') }}
+        sequence: !input config_released
