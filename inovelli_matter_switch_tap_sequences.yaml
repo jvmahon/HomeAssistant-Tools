@@ -3,7 +3,7 @@ blueprint:
   description: "Create an automation to perform predefined actions when a button on
     an Inovelli switch is clicked. Supported models:\n\n  - VTM31-SN\n  - VTM35-SN"
   domain: automation
-  author: jvm33
+  author: svargo jaykub jvm
   homeassistant:
     min_version: 2024.8.0
   input:
