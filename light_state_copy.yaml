@@ -19,7 +19,7 @@ blueprint:
           - domain:
             - light
           multiple: true
-  source_url: https://gist.github.com/jvmahon/71adb5b4388fa6843ec2e6ba62d6d315
+  source_url: https://raw.githubusercontent.com/jvmahon/HomeAssistant-Tools/main/light_state_copy.yaml
 mode: queued 
 max_exceeded: silent
 variables:
