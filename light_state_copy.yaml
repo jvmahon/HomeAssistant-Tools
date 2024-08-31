@@ -1,0 +1,59 @@
+blueprint:
+  name: Controlling Device Sets Controlled Device brightness states
+  description: Synchronize the on/off state of 2 entities
+  domain: automation
+  input:
+    controlling_light:
+      name: Controlling Light
+      selector:
+        entity:
+          filter:
+          - domain:
+            - light
+          multiple: false
+    target_light:
+      name: Target Light
+      selector:
+        entity:
+          filter:
+          - domain:
+            - light
+          multiple: true
+  source_url: https://gist.github.com/jvmahon/71adb5b4388fa6843ec2e6ba62d6d315
+mode: queued 
+max_exceeded: silent
+variables:
+  entity_1: !input controlling_light
+  entity_2: !input target_light
+trigger:
+- platform: state
+  entity_id: !input controlling_light
+condition: []
+action:
+- choose:
+  - conditions:
+    - condition: state
+      entity_id: !input controlling_light
+      state: 'on'
+    sequence:
+    - data:
+        brightness: '{{ state_attr(trigger.entity_id, ''brightness'') }}'
+        transition: 0
+      action: light.turn_on
+      target:
+        entity_id: !input target_light
+  - conditions:
+    - condition: state
+      entity_id: !input controlling_light
+      state: 'off'
+    sequence:
+    - data:
+        entity_id: !input target_light
+        transition: 0
+      action: light.turn_off
+  default:
+  - target:
+      entity_id: !input target_light
+    action: light.turn_on
+    data:
+      transition: 0  
