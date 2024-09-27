@@ -27,7 +27,7 @@ variables:
   entity_2: !input target_light
 trigger:
   - platform: state
-    entity_id:!input controlling_lock
+    entity_id: !input controlling_lock
 condition: []
 action:
   - choose:
