@@ -1,0 +1,82 @@
+blueprint:
+  name: Lock State Indicator Using RGB Bulb
+  description: Indicate Lock State Using RGB Bulb
+  domain: automation
+  input:
+    controlling_lock:
+      name: Lock
+      selector:
+        entity:
+          filter:
+          - domain:
+            - lock
+          multiple: false
+    target_light:
+      name: RGB Light for Notification 
+      selector:
+        entity:
+          filter:
+          - domain:
+            - light
+          multiple: true
+  source_url: https://raw.githubusercontent.com/jvmahon/HomeAssistant-Tools/main/light_state_copy.yaml
+mode: queued 
+max_exceeded: silent
+variables:
+  entity_1: !input controlling_lock
+  entity_2: !input target_light
+trigger:
+  - platform: state
+    entity_id:!input controlling_lock
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, \"locked\") }}"
+            alias: Locked
+        sequence:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              rgb_color:
+                - 0
+                - 255
+                - 0
+              brightness_pct: 100
+            target:
+              entity_id:  !input target_light
+          - wait_for_trigger:
+              - platform: template
+                value_template: "{{ is_state(trigger.entity_id, \"unlocked\") }}"
+                alias: >-
+                  Wait 5 seconds, but end wait sooner if Lock changes to
+                  Unlocked
+            timeout:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+            alias: Wait 5 seconds, but end sooner if lock changes to unlocked again
+          - action: light.turn_off
+            metadata: {}
+            data: {}
+            target:
+              entity_id:  !input target_light
+      - conditions:
+          - condition: template
+            value_template: "{{ is_state(trigger.entity_id, \"unlocked\") }}"
+        sequence:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              brightness_pct: 50
+              rgb_color:
+                - 255
+                - 0
+                - 192
+            target:
+              entity_id: !input target_light
+        alias: Unlocked
+mode: queued
+max: 10
