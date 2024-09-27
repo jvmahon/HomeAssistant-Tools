@@ -3,7 +3,7 @@ blueprint:
   description: "Create an automation to perform predefined actions when a button on
     an Inovelli switch is clicked. Supported models:\n\n  - VTM31-SN\n  - VTM35-SN"
   domain: automation
-  author: svargo jaykub jvm
+  author: jvm33
   homeassistant:
     min_version: 2024.8.0
   input:
@@ -213,37 +213,37 @@ action:
       - conditions:
         - alias: Pressed 1X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_1') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_1') }}"
         sequence: !input up_pressed_once
       - conditions:
         - alias: Pressed 2X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_2') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_2') }}"
         sequence: !input up_pressed_twice
       - conditions:
         - alias: Pressed 3X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_3') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_3') }}"
         sequence: !input up_pressed_3_times
       - conditions:
         - alias: Pressed 4X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_4') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_4') }}"
         sequence: !input up_pressed_4_times
       - conditions:
         - alias: Pressed 5X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_5') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_5') }}"
         sequence: !input up_pressed_5_times
       - conditions:
         - alias: Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_press') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_press') }}"
         sequence: !input up_held
       - conditions:
         - alias: Release after Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_release') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_release') }}"
         sequence: !input up_released
   - conditions:
     - condition: trigger
@@ -254,37 +254,37 @@ action:
       - conditions:
         - alias: Pressed 1X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_1') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_1') }}"
         sequence: !input down_pressed_once
       - conditions:
         - alias: Pressed 2X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_2') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_2') }}"
         sequence: !input down_pressed_twice
       - conditions:
         - alias: Pressed 3X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_3') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_3') }}"
         sequence: !input down_pressed_3_times
       - conditions:
         - alias: Pressed 4X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_4') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_4') }}"
         sequence: !input down_pressed_4_times
       - conditions:
         - alias: Pressed 5X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_5') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_5') }}"
         sequence: !input down_pressed_5_times
       - conditions:
         - alias: Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_press') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_press') }}"
         sequence: !input down_held
       - conditions:
         - alias: Release after Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_release') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_release') }}"
         sequence: !input down_released
   - conditions:
     - condition: trigger
@@ -295,35 +295,35 @@ action:
       - conditions:
         - alias: Pressed 1X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_1') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_1') }}"
         sequence: !input config_pressed_once
       - conditions:
         - alias: Pressed 2X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_2') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_2') }}"
         sequence: !input config_pressed_twice
       - conditions:
         - alias: Pressed 3X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_3') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_3') }}"
         sequence: !input config_pressed_3_times
       - conditions:
         - alias: Pressed 4X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_4') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_4') }}"
         sequence: !input config_pressed_4_times
       - conditions:
         - alias: Pressed 5X
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'multi_press_5') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_5') }}"
         sequence: !input config_pressed_5_times
       - conditions:
         - alias: Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_press') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_press') }}"
         sequence: !input config_held
       - conditions:
         - alias: Release after Long Press
           condition: template
-          value_template: "{{ is_state_attr(trigger.to_state.entity_id, 'event_type', 'long_release') }}"
+          value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_release') }}"
         sequence: !input config_released

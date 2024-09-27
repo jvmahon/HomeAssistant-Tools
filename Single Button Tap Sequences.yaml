@@ -1,0 +1,117 @@
+blueprint:
+  name: Matter Button Tap Sequences
+  description: "Create an automation to perform predefined actions when a single button on
+    an Matter Device clicked."
+  domain: automation
+  author: jvm33
+  homeassistant:
+    min_version: 2024.8.0
+  input:
+    entities_inputs:
+      name: Entities
+      icon: mdi:devices
+      input:
+        button_entity:
+          name: Button Entity
+          selector:
+            entity:
+              filter:
+              - domain:
+                - event
+                device_class:
+                - button
+              multiple: true
+    button_inputs:
+      name: Button Pressed
+      icon: mdi:gesture-tap-button
+      input:
+        button_pressed_once:
+          name: Button pressed once
+          description: When Button is pressed once
+          default: []
+          selector:
+            action: {}
+        button_pressed_twice:
+          name: Button pressed twice
+          description: When Button is pressed twice
+          default: []
+          selector:
+            action: {}
+        button_pressed_3_times:
+          name: Button pressed 3 times
+          description: When Button is pressed 3 times
+          default: []
+          selector:
+            action: {}
+        button_pressed_4_times:
+          name: Button pressed 4 times
+          description: When Button is pressed 4 times
+          default: []
+          selector:
+            action: {}
+        button_pressed_5_times:
+          name: Button pressed 5 times
+          description: When Button is pressed 5 times
+          default: []
+          selector:
+            action: {}
+        button_held:
+          name: Button held
+          description: When Button is held
+          default: []
+          selector:
+            action: {}
+        button_released:
+          name: Button Released
+          description: When Button is released
+          default: []
+          selector:
+            action: {}
+
+  source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/inovelli_matter_switch_tap_sequences.yaml
+mode: queued
+max_exceeded: silent
+trigger:
+- platform: state
+  entity_id: !input button_entity
+  not_from:
+  - unknown
+  - unavailable
+condition: []
+action:
+- choose:
+  - conditions:
+    - alias: Pressed 1X
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_1') }}"
+    sequence: !input button_pressed_once
+  - conditions:
+    - alias: Pressed 2X
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_2') }}"
+    sequence: !input button_pressed_twice
+  - conditions:
+    - alias: Pressed 3X
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_3') }}"
+    sequence: !input button_pressed_3_times
+  - conditions:
+    - alias: Pressed 4X
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_4') }}"
+    sequence: !input button_pressed_4_times
+  - conditions:
+    - alias: Pressed 5X
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'multi_press_5') }}"
+    sequence: !input button_pressed_5_times
+  - conditions:
+    - alias: Long Press
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_press') }}"
+    sequence: !input button_held
+  - conditions:
+    - alias: Release after Long Press
+      condition: template
+      value_template: "{{ is_state_attr(trigger.entity_id, 'event_type', 'long_release') }}"
+    sequence: !input button_released

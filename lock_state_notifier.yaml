@@ -1,6 +1,7 @@
 blueprint:
   name: Lock State Indicator Using RGB Bulb
   description: Indicate Lock State Using RGB Bulb
+  source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/lock_state_notifier.yaml
   domain: automation
   input:
     controlling_lock:
@@ -19,11 +20,16 @@ blueprint:
           - domain:
             - light
           multiple: true
-  source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/lock_state_notifier.yaml
-max_exceeded: silent
-variables:
-  entity_1: !input controlling_lock
-  entity_2: !input target_light
+    unlocked_color:
+      name: Color to indicate unlocked
+      selector: 
+        color_rgb:
+      default: [255, 0, 192]
+    locked_color:
+      name: Color to indicate locked
+      selector: 
+        color_rgb:
+      default: [0, 255, 0]  
 trigger:
   - platform: state
     entity_id: !input controlling_lock
@@ -38,10 +44,7 @@ action:
           - action: light.turn_on
             metadata: {}
             data:
-              rgb_color:
-                - 0
-                - 255
-                - 0
+              rgb_color: !input locked_color
               brightness_pct: 100
             target:
               entity_id:  !input target_light
@@ -70,12 +73,10 @@ action:
             metadata: {}
             data:
               brightness_pct: 50
-              rgb_color:
-                - 255
-                - 0
-                - 192
+              rgb_color: !input unlocked_color
             target:
               entity_id: !input target_light
         alias: Unlocked
 mode: queued
 max: 10
+max_exceeded: silent
