@@ -20,7 +20,6 @@ blueprint:
             - light
           multiple: true
   source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/lock_state_notifier.yaml
-mode: queued 
 max_exceeded: silent
 variables:
   entity_1: !input controlling_lock
