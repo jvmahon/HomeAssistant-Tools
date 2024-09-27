@@ -19,7 +19,7 @@ blueprint:
           - domain:
             - light
           multiple: true
-  source_url: https://raw.githubusercontent.com/jvmahon/HomeAssistant-Tools/main/light_state_copy.yaml
+  source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/lock_state_notifier.yaml
 mode: queued 
 max_exceeded: silent
 variables:
