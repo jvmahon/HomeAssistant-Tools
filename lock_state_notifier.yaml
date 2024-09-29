@@ -35,6 +35,11 @@ trigger:
     entity_id: !input controlling_lock
 condition: []
 action:
+  - action: scene.create
+    metadata: {}
+    data:
+      scene_id: "{{this.context.id | lower }}"
+      snapshot_entities: !input target_light  
   - choose:
       - conditions:
           - condition: template
@@ -77,6 +82,15 @@ action:
             target:
               entity_id: !input target_light
         alias: Unlocked
+  - action: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: "{{ 'scene.' ~ this.context.id | lower}}"
+  - action: scene.delete
+    metadata: {}
+    data: {}
+    target:
+      entity_id: "{{ 'scene.' ~ this.context.id | lower }}"             
 mode: queued
 max: 10
 max_exceeded: silent
