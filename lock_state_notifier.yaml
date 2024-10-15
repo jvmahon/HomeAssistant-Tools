@@ -33,6 +33,7 @@ blueprint:
 trigger:
   - platform: state
     entity_id: !input controlling_lock
+    to: unlocked
 condition: []
 action:
   - action: scene.create
@@ -40,57 +41,46 @@ action:
     data:
       scene_id: "{{this.context.id | lower }}"
       snapshot_entities: !input target_light  
-  - choose:
-      - conditions:
-          - condition: template
-            value_template: "{{ is_state(trigger.entity_id, \"locked\") }}"
-            alias: Locked
-        sequence:
-          - action: light.turn_on
-            metadata: {}
-            data:
-              rgb_color: !input locked_color
-              brightness_pct: 100
-            target:
-              entity_id:  !input target_light
-          - wait_for_trigger:
-              - platform: template
-                value_template: "{{ is_state(trigger.entity_id, \"unlocked\") }}"
-                alias: >-
-                  Wait 5 seconds, but end wait sooner if Lock changes to
-                  Unlocked
-            timeout:
-              hours: 0
-              minutes: 0
-              seconds: 5
-              milliseconds: 0
-            alias: Wait 5 seconds, but end sooner if lock changes to unlocked again
-          - action: light.turn_off
-            metadata: {}
-            data: {}
-            target:
-              entity_id:  !input target_light
-      - conditions:
-          - condition: template
-            value_template: "{{ is_state(trigger.entity_id, \"unlocked\") }}"
-        sequence:
-          - action: light.turn_on
-            metadata: {}
-            data:
-              brightness_pct: 50
-              rgb_color: !input unlocked_color
-            target:
-              entity_id: !input target_light
-        alias: Unlocked
+    alias: Scene 'create' - capture original state of LEDs
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 50
+      rgb_color: !input unlocked_color
+    target:
+      entity_id: !input target_light  
+  - wait_for_trigger:
+      - platform: state
+        entity_id: !input controlling_lock
+        to: locked
+    alias: Wait for lock to be locked again
+  - action: light.turn_on
+    metadata: {}
+    data:
+      rgb_color: !input locked_color
+      brightness_pct: 50
+    target:
+      entity_id: !input target_light 
+  - alias: Wait 3 seconds, but end sooner if lock changes to unlocked again
+    wait_for_trigger:
+      - platform: state
+        entity_id: !input controlling_lock
+        to: unlocked
+    timeout:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
   - action: scene.turn_on
     metadata: {}
     target:
       entity_id: "{{ 'scene.' ~ this.context.id | lower}}"
+    alias: Activate Scene - Restore original state of LEDs
   - action: scene.delete
     metadata: {}
     data: {}
     target:
-      entity_id: "{{ 'scene.' ~ this.context.id | lower }}"             
+      entity_id: "{{ 'scene.' ~ this.context.id | lower }}"        
 mode: queued
 max: 10
 max_exceeded: silent
