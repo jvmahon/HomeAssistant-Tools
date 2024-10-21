@@ -30,18 +30,27 @@ blueprint:
       selector: 
         color_rgb:
       default: [0, 255, 0]  
+    restore_led_values:
+      name: Store and Restore Prior LED State
+      selector:
+        boolean:
+      default: "on"
 trigger:
-  - platform: state
+  - trigger: state
     entity_id: !input controlling_lock
     to: unlocked
 condition: []
 action:
-  - action: scene.create
-    metadata: {}
-    data:
-      scene_id: "{{this.context.id | lower }}"
-      snapshot_entities: !input target_light  
-    alias: Scene 'create' - capture original state of LEDs
+  - if:
+    - condition: template
+      value_template: !input restore_led_values
+    then:
+    - action: scene.create
+      metadata: {}
+      data:
+        scene_id: "{{this.context.id | lower }}"
+        snapshot_entities: !input target_light  
+      alias: Scene 'create' - capture original state of LEDs
   - action: light.turn_on
     metadata: {}
     data:
@@ -50,7 +59,7 @@ action:
     target:
       entity_id: !input target_light  
   - wait_for_trigger:
-      - platform: state
+      - trigger: state
         entity_id: !input controlling_lock
         to: locked
     alias: Wait for lock to be locked again
@@ -63,7 +72,7 @@ action:
       entity_id: !input target_light 
   - alias: Wait 3 seconds, but end sooner if lock changes to unlocked again
     wait_for_trigger:
-      - platform: state
+      - trigger: state
         entity_id: !input controlling_lock
         to: unlocked
     timeout:
@@ -71,16 +80,24 @@ action:
       minutes: 0
       seconds: 3
       milliseconds: 0
-  - action: scene.turn_on
-    metadata: {}
-    target:
-      entity_id: "{{ 'scene.' ~ this.context.id | lower}}"
-    alias: Activate Scene - Restore original state of LEDs
-  - action: scene.delete
-    metadata: {}
-    data: {}
-    target:
-      entity_id: "{{ 'scene.' ~ this.context.id | lower }}"        
+  - if:
+    - condition: template
+      value_template: !input restore_led_values
+    then:
+    - action: scene.turn_on
+      metadata: {}
+      target:
+        entity_id: "{{ 'scene.' ~ this.context.id | lower}}"
+      alias: Activate Scene - Restore original state of LEDs
+    - action: scene.delete
+      metadata: {}
+      data: {}
+      target:
+        entity_id: "{{ 'scene.' ~ this.context.id | lower }}"
+    else:
+    - action: light.turn_off
+      target:
+        entity_id: !input target_light 
 mode: queued
 max: 10
 max_exceeded: silent
