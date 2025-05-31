@@ -41,7 +41,9 @@ actions:
         sequence:
           - action: cover.open
             target:
-              entity_id: !input target_shades
+              entity_id:  >-
+                {{ !input target_shades | reject('is_state', 'open') |
+                reject('is_state', 'opening') | list}}
       - conditions:
           - condition: trigger
             id:
