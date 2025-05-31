@@ -42,7 +42,7 @@ actions:
           - action: cover.open
             target:
               entity_id:  >-
-                {{ !input target_shades | reject('is_state', 'open') |
+                {{ shade_entities | reject('is_state', 'open') |
                 reject('is_state', 'opening') | list}}
       - conditions:
           - condition: trigger
