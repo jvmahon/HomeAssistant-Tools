@@ -41,7 +41,7 @@ actions:
         sequence:
           - action: cover.open
             target:
-              entity_id:  "{{ shade_entities }}"
+              entity_id: shade_entities
       - conditions:
           - condition: trigger
             id:
