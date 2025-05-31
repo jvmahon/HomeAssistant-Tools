@@ -1,4 +1,4 @@
-blueprint:
+pblueprint:
   name: Synchronize Open and Closing Group of shades
   description: Synchronize the open/close state of a group of shades
   domain: automation
@@ -42,7 +42,7 @@ actions:
           - action: cover.open
             target:
               entity_id:  >-
-                {{ shade_entities | reject('is_state', 'open') |
+                {{ expand(shade_entities) | reject('is_state', 'open') |
                 reject('is_state', 'opening') | list}}
       - conditions:
           - condition: trigger
