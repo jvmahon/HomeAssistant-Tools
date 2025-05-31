@@ -41,9 +41,7 @@ actions:
         sequence:
           - action: cover.open
             target:
-              entity_id:  >-
-                {{ expand(shade_entities) | reject('is_state', 'open') |
-                reject('is_state', 'opening') | list}}
+              entity_id:  "{{ shade_entities }}"
       - conditions:
           - condition: trigger
             id:
