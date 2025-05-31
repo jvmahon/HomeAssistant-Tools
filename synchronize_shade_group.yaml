@@ -38,24 +38,10 @@ actions:
           - condition: trigger
             id:
               - Opening
-        sequence:
-          - action: cover.open_cover
-            metadata: {}
-            data: {}
-            target:
-              entity_id: >-
-                {{ shade_entities | reject('is_state', 'open') |
-                reject('is_state', 'opening') | list}}
+        sequence: []
       - conditions:
           - condition: trigger
             id:
               - Closing
-        sequence:
-          - action: cover.close_cover
-            metadata: {}
-            data: {}
-            target:
-              entity_id: >-
-                {{ shade_entities | reject('is_state', 'closed') |
-                reject('is_state', 'closing') | list}}
+        sequence: []
 mode: single
