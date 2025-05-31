@@ -11,6 +11,9 @@ blueprint:
           - domain:
             - cover
           multiple: true
+  source_url: https://github.com/jvmahon/HomeAssistant-Tools/blob/main/synchronize_shade_group.yaml
+variables:
+  shade_group: !input target_shades
 triggers:
   - trigger: state
     entity_id: !input target_shades
