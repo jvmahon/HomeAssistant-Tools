@@ -38,10 +38,16 @@ actions:
           - condition: trigger
             id:
               - Opening
-        sequence: []
+        sequence:
+          - action: cover.open
+            target:
+              entity_id: !input target_shades
       - conditions:
           - condition: trigger
             id:
               - Closing
-        sequence: []
+        sequence:
+          - action: cover.close
+            target:
+              entity_id: !input target_shades
 mode: single
